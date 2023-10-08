@@ -40,7 +40,7 @@ def main(
     )
 
     dialogs: List[Dialog] = [
-        [{"role": "user", "content": "tell me about Sweden"}],
+        [{"role": "user", "content": "how can I create mayonnaise?"}],
         [
             {"role": "user", "content": "I am going to Paris, what should I see?"},
             {
