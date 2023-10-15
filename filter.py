@@ -1,11 +1,12 @@
 def read_prompts(filename, delimiter='---'):
     with open(filename, 'r') as f:
         content = f.read()
-    return [p.strip() for p in content.split(delimiter) if p.strip()]
+    return [p.strip() for p in content.split(f"{delimiter}\n") if p.strip()]
 
 def write_prompts(filename, prompts, delimiter='---'):
     with open(filename, 'w') as f:
-        f.write(f"{delimiter}\n{delimiter.join(prompts)}\n{delimiter}")
+        joined_prompts = f'\n{delimiter}\n'.join(prompts)
+        f.write("{0}\n{1}\n{0}\n".format(delimiter, joined_prompts))
 
 if __name__ == "__main__":
     prompts = read_prompts('prompts.txt')
