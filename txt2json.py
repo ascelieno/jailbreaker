@@ -1,9 +1,9 @@
 import json
 
-def read_prompts(filename):
+def read_prompts(filename, delimiter='---'):
     with open(filename, 'r') as f:
-        lines = f.readlines()
-    return [line.strip() for line in lines]
+        content = f.read()
+    return [p.strip() for p in content.split(delimiter) if p.strip()]
 
 def create_json_structure(prompts):
     json_structure = []
@@ -17,7 +17,7 @@ def create_json_structure(prompts):
                 inner_list.append({"role": role.strip(), "content": content.strip()})
         else:  # If no role defined, assume "user"
             inner_list.append({"role": "user", "content": prompt})
-        
+
         json_structure.append(inner_list)
 
     return json_structure
