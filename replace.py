@@ -1,4 +1,5 @@
 import re
+import argparse
 
 def read_prompts(filename, delimiter='---'):
     with open(filename, 'r') as f:
@@ -21,13 +22,20 @@ def replace_phrases(text, replacement_pairs):
     return text, changed
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Replace text in prompts.')
+    parser.add_argument('--pairs', nargs='+', help='Replacement pairs in the format "old=new"')
+    args = parser.parse_args()
+
+    # Validate and create the replacement pairs
+    replacement_pairs = []
+    for pair in args.pairs:
+        parts = pair.split('=')
+        if len(parts) == 2:
+            replacement_pairs.append(tuple(parts))
+        else:
+            print(f"Skipping invalid replacement pair: {pair}")
+
     prompts = read_prompts('prompts.txt')
-    
-    replacement_pairs = [
-        ("ChatGPT", "Llama"),
-        ("ChatGPT's", "LLama's"),
-        ("OpenAI", "Meta")
-    ]
 
     new_prompts = []
     for i, p in enumerate(prompts):
@@ -36,6 +44,6 @@ if __name__ == "__main__":
         if changed:
             print(f"Replacement made in prompt {i + 1}:\nOld: {p}\nNew: {new_p}\n")
 
-    write_prompts('new_prompts.txt', new_prompts)
+    write_prompts('prompts.txt', new_prompts)
 
     print("Replacement and writing to disk completed.")

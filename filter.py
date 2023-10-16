@@ -14,7 +14,7 @@ if __name__ == "__main__":
     insert_prompts = [p for p in prompts if '[INSERT PROMPT HERE]' in p]
     other_prompts = [p for p in prompts if '[INSERT PROMPT HERE]' not in p]
     
-    write_prompts('insert_prompts.txt', insert_prompts)
+    write_prompts('prompts.txt', insert_prompts)
     write_prompts('other_prompts.txt', other_prompts)
     
     print("Total number of prompts: {}".format(len(prompts)))
