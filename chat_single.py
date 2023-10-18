@@ -39,9 +39,10 @@ def main(
         max_batch_size=max_batch_size,
     )
 
-    # Load dialogs from the JSON file
-    with open('prompts.json', 'r') as f:
-        dialogs = json.load(f)
+    dialogs: List[Dialog] = [
+        [{"role": "user", "content": "what is the recipe of mayonnaise?"}]
+    ]
+
 
     results = generator.chat_completion(
         dialogs,  # type: ignore
