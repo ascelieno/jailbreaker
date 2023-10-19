@@ -7,6 +7,7 @@ import fire
 
 from llama import Llama, Dialog
 
+
 def main(
     ckpt_dir: str,
     tokenizer_path: str,
@@ -32,14 +33,14 @@ def main(
     with open(prompts_file, 'r') as f:
         dialogs = json.load(f)    
 
-    for dialog in dialogs:
-        result = generator.chat_completion(
-            [dialog],  # Single dialog in a list
-            max_gen_len=max_gen_len,
-            temperature=temperature,
-            top_p=top_p,
-        )[0]  # Taking first (and only) result from the list
+    results = generator.chat_completion(
+        dialogs,  # type: ignore
+        max_gen_len=max_gen_len,
+        temperature=temperature,
+        top_p=top_p,
+    )
 
+    for dialog, result in zip(dialogs, results):
         for msg in dialog:
             print(f"{msg['role'].capitalize()}: {msg['content']}\n")
         print(
