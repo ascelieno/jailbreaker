@@ -14,7 +14,7 @@ while IFS= read -r prompt; do
 
   # Append the response to the JSON file and add a comma for separation
   echo "$response," >> responses.json
-done < questions.txt
+done < data/questions_5.txt
 
 # Use `sed` to remove the trailing comma from the last response
 sed -i '$ s/,$//' responses.json
