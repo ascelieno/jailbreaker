@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Initialize an empty JSON array in the file
-echo "[" > responses.json
+echo "[" > response.json
 
 # Read prompts from the file line by line
 while IFS= read -r prompt; do
@@ -14,10 +14,10 @@ while IFS= read -r prompt; do
 
   # Append the response to the JSON file and add a comma for separation
   echo "$response," >> responses.json
-done < data/questions_5.txt
+done < questions_5.txt
 
 # Use `sed` to remove the trailing comma from the last response
-sed -i '$ s/,$//' responses.json
+sed -i '$ s/,$//' response.json
 
 # Close the JSON array
-echo "]" >> responses.json
+echo "]" >> response_5.json
