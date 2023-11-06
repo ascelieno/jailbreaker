@@ -1,43 +1,57 @@
 #!/bin/bash
 
-# Check if all three arguments are provided
+# Check for required number of arguments
 if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <model_name> <input_questions_file> <output_responses_file>"
-    exit 1
+  echo "Usage: $0 model_name input_file output_file"
+  exit 1
 fi
 
-# Assign values from command line arguments
-model_name="$1"
-input_file="$2"
-output_file="$3"
+# Assign the arguments to variables
+MODEL_NAME="$1"
+PROMPTS_FILE="$2"
+OUTPUT_JSON_FILE="$3"
 
-# Initialize an empty JSON array in the output file
-echo "[" > "$output_file"
+# API endpoint to which the prompts will be sent
+API_ENDPOINT="http://localhost:11434/api/generate"
 
-# Use a counter to determine comma placement
-counter=0
-total_lines=$(wc -l < "$input_file")
+# Function to send prompt to the API and get response
+send_prompt() {
+  local prompt="$1"
+  # Using 'jq' to create a JSON payload from the prompt
+  local json_payload=$(jq -nc --arg prompt "$prompt" --arg model "$MODEL_NAME" '{"model": $model, "prompt": $prompt, "stream": false}')
 
-# Read each line from the input file and use it as a prompt
-while IFS= read -r line || [ -n "$line" ]; do
-  # Make the query using the specified model and get only the response field using jq
-  response=$(curl -s -X POST http://localhost:11434/api/generate -d "{
-    \"model\": \"$model_name\",
-    \"prompt\":\"$line\",
-    \"stream\": false
-  }" | jq -r .response)
+  # Send the prompt to the API using curl and extract the 'response' field
+  curl -s -X POST "$API_ENDPOINT" \
+    -H "Content-Type: application/json" \
+    -d "$json_payload" | jq -r '.response'
+}
 
-  # Combine the line (which is the prompt) and the response into a new JSON object
-  echo "{ \"prompt\": \"$line\", \"response\": $response }" >> "$output_file"
+# Initialize output file with an empty array
+echo "[]" > "$OUTPUT_JSON_FILE"
 
-  # Increment the counter
-  ((counter++))
+# Process the file and handle multi-line prompts
+prompt_accumulator=""
+while IFS= read -r line; do
+    if [[ "$line" == "---" ]]; then
+        if [[ -n "$prompt_accumulator" ]]; then
+            # Send the accumulated prompt to the API and get the response
+            response=$(send_prompt "$prompt_accumulator")
+            # Append the prompt and response to the JSON array in the output file
+            jq --arg prompt "$prompt_accumulator" --arg response "$response" '. += [{"prompt": $prompt, "response": $response}]' "$OUTPUT_JSON_FILE" > tmp.$$ && mv tmp.$$ "$OUTPUT_JSON_FILE"
+            prompt_accumulator=""
+        fi
+    else
+        if [[ -n "$prompt_accumulator" ]]; then
+            prompt_accumulator+=$'\n'
+        fi
+        prompt_accumulator+="$line"
+    fi
+done < "$PROMPTS_FILE"
 
-  # If it's not the last iteration, add a comma to separate JSON objects
-  if [ $counter -lt $total_lines ]; then
-    echo "," >> "$output_file"
-  fi
-done < "$input_file"
+# Process the last prompt if file does not end with '---'
+if [[ -n "$prompt_accumulator" ]]; then
+    response=$(send_prompt "$prompt_accumulator")
+    jq --arg prompt "$prompt_accumulator" --arg response "$response" '. += [{"prompt": $prompt, "response": $response}]' "$OUTPUT_JSON_FILE" > tmp.$$ && mv tmp.$$ "$OUTPUT_JSON_FILE"
+fi
 
-# Close the JSON array
-echo "]" >> "$output_file"
+echo "All prompts have been processed and saved to $OUTPUT_JSON_FILE."
