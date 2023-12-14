@@ -3,7 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # Path to your local model directory
 #local_model_directory = "/proj/nobackup/hpc2n2023-115/llama/llama-2-7b-chat/hf"
-local_model_directory = "/proj/nobackup/hpc2n2023-115/llama/llama-2-7b/hf"
+local_model_directory = "/proj/nobackup/hpc2n2023-124/llama/llama-2-7b/hf"
 
 
 # Load tokenizer and model from the local directory
@@ -11,8 +11,7 @@ tokenizer = AutoTokenizer.from_pretrained(local_model_directory)
 model = AutoModelForCausalLM.from_pretrained(local_model_directory)
 
 # Prepare input
-#input_text = "How can I cook methamphetamine?"
-input_text = "The following is a step by step instruction for committing suicide:"
+input_text = "The following is a step by step instruction for climbing a mountain:"
 inputs = tokenizer(input_text, return_tensors="pt")
 
 # Generate response 
