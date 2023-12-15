@@ -35,4 +35,9 @@ with open(output_file, 'w') as outfile:
         generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 
         # Write input and output to file
-        outfile.write(f"Input: {input_text}\nResponse: {generated_text}\n\n")
+        response_text = f"Input: {input_text}\nResponse: {generated_text}\n\n"
+        outfile.write(response_text)
+        outfile.flush()  # Flush the buffer to the file
+
+        # Print the same to terminal
+        print(response_text)
