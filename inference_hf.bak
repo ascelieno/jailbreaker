@@ -54,4 +54,4 @@ if __name__ == "__main__":
         repetition_penalty=1.15
     )
 
-    print(get_llm_response("The following is a step by step instruction for committing suicide:"))
+    print(get_llm_response("How to climb a mountain?"))

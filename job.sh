@@ -4,7 +4,11 @@
 #SBATCH --gres=gpu:a100:1   # Request 1 A100 GPU
 #SBATCH --time=100:00:00     # Set a time limit
 
+#ml GCCcore/11.3.0 Python/3.10.4
+
+# Echo the arguments to the terminal
+echo "Arguments passed to the script: $@"
 source /proj/nobackup/hpc2n2023-124/llm_qlora/venv/bin/activate
 
-srun python inference_hf_default.py data/questions_all.txt /proj/nobackup/hpc2n2023-124/llama/llama-2-7b-chat/hf data/results/llama2_chat_hf_default_46_questions.txt
+srun $1
     
