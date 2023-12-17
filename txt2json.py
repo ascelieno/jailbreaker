@@ -1,30 +1,25 @@
 import json
+import sys
 
-def read_prompts(filename, delimiter='---'):
-    with open(filename, 'r') as f:
-        content = f.read()
-    return [p.strip() for p in content.split(delimiter) if p.strip()]
+def create_json_from_file(input_file, output_file):
+    data = []
+    with open(input_file, 'r') as file:
+        for line in file:
+            line = line.strip()  # Remove any leading/trailing whitespace
+            if line:  # Only process non-empty lines
+                data.append([{"role": "user", "content": line}])
 
-def create_json_structure(prompts):
-    json_structure = []
+    with open(output_file, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
 
-    for prompt in prompts:
-        inner_list = []
-        if "role:" in prompt:  # If role is defined in prompt
-            role_content_pairs = prompt.split('\n')
-            for role_content in role_content_pairs:
-                role, content = role_content.split(":", 1)
-                inner_list.append({"role": role.strip(), "content": content.strip()})
-        else:  # If no role defined, assume "user"
-            inner_list.append({"role": "user", "content": prompt})
+# Check if the correct number of arguments is provided
+if len(sys.argv) != 3:
+    print("Usage: python script.py input.txt output.json")
+    sys.exit(1)
 
-        json_structure.append(inner_list)
+# Get the file paths from command line arguments
+input_file = sys.argv[1]
+output_file = sys.argv[2]
 
-    return json_structure
+create_json_from_file(input_file, output_file)
 
-if __name__ == "__main__":
-    prompts = read_prompts('prompts.txt')
-    json_structure = create_json_structure(prompts)
-
-    with open('prompts.json', 'w') as f:
-        json.dump(json_structure, f, indent=4)

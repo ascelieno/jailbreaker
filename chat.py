@@ -10,7 +10,7 @@ from llama import Llama, Dialog
 def main(
     ckpt_dir: str,
     tokenizer_path: str,
-    prompts_file: str = "prompts.json",  # New parameter for JSON file
+    prompts_file: str = "data/questions_all.json",  # New parameter for JSON file
     temperature: float = 0.6,
     top_p: float = 0.9,
     max_seq_len: int = 512,
