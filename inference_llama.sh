@@ -17,3 +17,4 @@ srun torchrun --nproc_per_node 1 /proj/nobackup/hpc2n2023-124/jailbreaker/exampl
     --tokenizer_path /proj/nobackup/hpc2n2023-124/llama/tokenizer.model \
     --max_seq_len 1024 --max_batch_size 6 
 
+#torchrun --nproc_per_node 1 ../jailbreaker/inference_llama_text.py --ckpt_dir llama-2-7b/ --tokenizer_path tokenizer.model --max_seq_len 1024 --max_batch_size 64  --input_file ../jailbreaker/data/questions_all_reformulated.txt ../jailbreaker/data/results/llama2_7b_original_45_questions_reformulated.txt
