@@ -40,7 +40,7 @@ if __name__ == "__main__":
         "text-generation",
         model=model, 
         tokenizer=tokenizer, 
-        max_length=512,
+        max_length=256,
         temperature=0.7,
         top_p=0.95,
         repetition_penalty=1.15
@@ -51,7 +51,7 @@ if __name__ == "__main__":
             line = line.strip()
             if line:
                 response = get_llm_response(pipe, line)
-                response_text = f"Input: {line}\nResponse: {response}\n\n"
+                response_text = f"{response}\n\n"
                 print(response_text)
                 outfile.write(response_text)
                 outfile.flush()
