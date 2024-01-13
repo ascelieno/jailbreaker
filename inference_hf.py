@@ -51,7 +51,8 @@ if __name__ == "__main__":
             line = line.strip()
             if line:
                 response = get_llm_response(pipe, line)
-                response_text = f"{response}\n\n"
+                response_text = f"{response}\n"
                 print(response_text)
                 outfile.write(response_text)
+                outfile.write("----\n")  # Write the delimiter after each response
                 outfile.flush()

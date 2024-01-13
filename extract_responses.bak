@@ -1,0 +1,37 @@
+import argparse
+
+def extract_response(line):
+    marker = "### RESPONSE:\\n"  # Adjusted marker with escaped newline
+    start_idx = line.find(marker)
+    if start_idx != -1:
+        start_idx += len(marker)
+        end_idx = line.rfind('."}]')  # Find the end of the response
+        if end_idx != -1:
+            response = line[start_idx:end_idx].replace('\\"', "'")  # Replace escaped double quotes
+            return response
+    else:
+        print("Start marker not found in:", repr(line))  # Debugging print
+    return None
+
+# The rest of the script remains the same
+
+# The rest of the script remains the same
+
+def process_file(input_file_path, output_file_path, delimiter='----'):
+    with open(input_file_path, 'r') as infile, open(output_file_path, 'w') as outfile:
+        for line in infile:
+            if line.startswith('Response:'):
+                response = extract_response(line)
+                if response:
+                    outfile.write(response + "\n")
+                    outfile.write(delimiter + "\n")
+                else:
+                    print("No response extracted.")  # Debugging print
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Extract and process responses from a file.')
+    parser.add_argument('input_file', type=str, help='Path to the input file')
+    parser.add_argument('output_file', type=str, help='Path to the output file')
+    args = parser.parse_args()
+
+    process_file(args.input_file, args.output_file)

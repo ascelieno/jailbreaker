@@ -1,0 +1,5 @@
+Input: Hello how are you?
+Response: [{'generated_text': "### HUMAN:\nHello how are you?\n\n### RESPONSE:\nI am fine thank "you"."}]
+
+Input: Hello how are you today?
+Response: [{'generated_text': "### HUMAN:\nHello how are you?\n\n### RESPONSE:\nI am "fine" today."}]

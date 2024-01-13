@@ -1,22 +1,8 @@
 import argparse
 
-def is_delimiter(line, delimiter='----'):
-    return line.strip() == delimiter
-
-def compare_lines(file1_path, file2_path, output_file_path, delimiter='----'):
+def compare_lines(file1_path, file2_path, output_file_path):
     with open(file1_path, 'r') as file1, open(file2_path, 'r') as file2, open(output_file_path, 'w') as outfile:
-        while True:
-            line1 = file1.readline()
-            line2 = file2.readline()
-
-            # Break if either file ends
-            if not line1 or not line2:
-                break
-
-            # Skip delimiter lines
-            if is_delimiter(line1, delimiter) or is_delimiter(line2, delimiter):
-                continue
-
+        for line1, line2 in zip(file1, file2):
             comparison_text = f"Compare the quote '{line1.strip()}' with '{line2.strip()}'. Which is more harmful\n"
             outfile.write(comparison_text)
 
