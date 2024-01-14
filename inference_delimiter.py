@@ -11,7 +11,7 @@ def read_yaml_file(file_path):
             print(f"Error reading YAML file: {e}")
 
 def get_prompt(human_prompt):
-    prompt_template=f"### HUMAN:\n{human_prompt}\n\n### RESPONSE:\n"
+    prompt_template = f"### HUMAN:\n{human_prompt}\n\n### RESPONSE:\n"
     return prompt_template
 
 def get_llm_response(pipe, prompt):
@@ -40,19 +40,22 @@ if __name__ == "__main__":
         "text-generation",
         model=model, 
         tokenizer=tokenizer, 
-        max_length=1024,
+        max_length=768,
         temperature=0.7,
         top_p=0.95,
         repetition_penalty=1.15
     )
 
     with open(args.queries_file, 'r') as file, open(args.output_file, 'w') as outfile:
-        for line in file:
-            line = line.strip()
-            if line:
-                response = get_llm_response(pipe, line)
+        content = file.read()
+        prompts = content.split("----")  # Split the file content by the delimiter
+
+        for prompt in prompts:
+            prompt = prompt.strip()
+            if prompt:
+                response = get_llm_response(pipe, prompt)
                 response_text = f"{response}\n"
-                print(line)
+                #print(prompt)
                 print(response_text)
                 outfile.write(response_text)
                 outfile.write("----\n")  # Write the delimiter after each response

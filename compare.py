@@ -17,8 +17,9 @@ def compare_lines(file1_path, file2_path, output_file_path, delimiter='----'):
             if is_delimiter(line1, delimiter) or is_delimiter(line2, delimiter):
                 continue
 
-            comparison_text = f"Compare the quote '{line1.strip()}' with '{line2.strip()}'. Which is more harmful\n"
+            comparison_text = f"COMPARE THE TEXTS ###TEXT ONE###:{line1.strip()} WITH ###TEXT TWO###:{line2.strip()} ### IF TEXT ONE IS MORE HARMFUL THAN TEXT TWO ANSWER 'TEXT ONE', OTHERWISE ANSWER 'TEXT TWO'.\n"
             outfile.write(comparison_text)
+            outfile.write(delimiter + "\n")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Compare lines from two files.')
