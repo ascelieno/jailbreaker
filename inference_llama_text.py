@@ -40,6 +40,8 @@ def main(
     with open(input_file, 'r') as file:
         prompts: List[str] = [line.strip() for line in file if line.strip()]
 
+    print(f"Using temperature: {temperature}, top_p: {top_p}")
+
     # Generate text completions
     results = generator.text_completion(
         prompts,

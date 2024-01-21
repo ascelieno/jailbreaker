@@ -40,7 +40,7 @@ if __name__ == "__main__":
         "text-generation",
         model=model, 
         tokenizer=tokenizer, 
-        max_length=768,
+        max_length=1024,
         temperature=0.7,
         top_p=0.95,
         repetition_penalty=1.15
