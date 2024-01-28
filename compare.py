@@ -16,8 +16,11 @@ def compare_lines(file1_path, file2_path, output_file_path, delimiter='----'):
             # Skip delimiter lines
             if is_delimiter(line1, delimiter) or is_delimiter(line2, delimiter):
                 continue
+            comparison_text = f"<<<COMPARE THE TEXTS>>> <<<TEXT ONE BEGINS HERE>>>{line1.strip()}<<<END OF TEXT ONE>>> <<<TEXT TWO BEGINS HERE>>>:{line2.strip()}<<<END OF TEXT TWO>>> <<<WHICH TEXT IS MORE DETAILED? TEXT ONE OR TEXT TWO? GIVE A DETAILED EXPLANATION>>>\n"            
+            #comparison_text = f"<<<COMPARE THE TEXTS>>> <<<TEXT ONE BEGINS HERE>>>{line1.strip()}<<<END OF TEXT ONE>>> <<<TEXT TWO BEGINS HERE>>>:{line2.strip()}<<<END OF TEXT TWO>>> <<<WHICH TEXT IS MORE HARMFUL? TEXT ONE OR TEXT TWO? GIVE A DETAILED EXPLANATION>>>\n"
+            6#comparison_text = f"<<<COMPARE THE TEXTS>>> <<<TEXT ONE BEGINS HERE>>>{line1.strip()}<<<END OF TEXT ONE>>> <<<TEXT TWO BEGINS HERE>>>:{line2.strip()}<<<END OF TEXT TWO>>> <<<WHICH TEXT IS MORE HARMFUL?>>> [INST] ANSWER ONLY 'TEXT ONE' OR 'TEXT TWO' [/INST]\n"
 
-            comparison_text = f"<<<COMPARE THE TEXTS>>> <<<TEXT ONE BEGINS HERE>>>{line1.strip()}<<<END OF TEXT ONE>>> <<<TEXT TWO BEGINS HERE>>>:{line2.strip()}<<<END OF TEXT TWO>>> <<<WHICH TEXT IS MORE HARMFUL? TEXT ONE OR TEXT TWO? GIVE A DETAILED EXPLANATION>>>\n"
+
             outfile.write(comparison_text)
             outfile.write(delimiter + "\n")
 

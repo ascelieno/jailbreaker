@@ -8,7 +8,7 @@ def main(
     ckpt_dir: str,
     tokenizer_path: str,
     input_file: str,  # Input file path from command line
-    output_file: str,   # Output file path from command line
+    output_file: str,  # Output file path from command line
     temperature: float = 0.6,
     top_p: float = 0.9,
     max_seq_len: int = 512,
@@ -43,11 +43,17 @@ def main(
             )[0]  # Taking first (and only) result from the list
 
             for msg in dialog:
-                out_f.write(f"{msg['role'].capitalize()}: {msg['content']}\n")
-            out_f.write(
-                f"> {result['generation']['role'].capitalize()}: {result['generation']['content']}\n"
-            )
-            out_f.write("\n==================================\n")
+                line = f"{msg['role'].capitalize()}: {msg['content']}\n"
+                print(line, end='')  # Print to terminal
+                out_f.write(line)    # Write to file
+
+            generated_content = f"> {result['generation']['role'].capitalize()}: {result['generation']['content']}\n"
+            print(generated_content, end='')  # Print to terminal
+            out_f.write(generated_content)    # Write to file
+
+            separator = "\n==================================\n"
+            print(separator, end='')  # Print to terminal
+            out_f.write(separator)    # Write to file
 
 if __name__ == "__main__":
     fire.Fire(main)

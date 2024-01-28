@@ -11,7 +11,6 @@ def main(
     top_p: float = 0.9,
     max_seq_len: int = 256,
     max_gen_len: int = 1024,
-    max_batch_size: int = 4,
 ):
     """
     Entry point of the program for generating text using a pretrained model.
@@ -27,39 +26,36 @@ def main(
             Defaults to 0.9.
         max_seq_len (int, optional): The maximum sequence length for input prompts. Defaults to 128.
         max_gen_len (int, optional): The maximum length of generated sequences. Defaults to 1024.
-        max_batch_size (int, optional): The maximum batch size for generating sequences. Defaults to 4.
     """
     generator = Llama.build(
         ckpt_dir=ckpt_dir,
         tokenizer_path=tokenizer_path,
         max_seq_len=max_seq_len,
-        max_batch_size=max_batch_size,
+        max_batch_size=1,  # Ensure sequential processing
     )
 
     # Read prompts from file
     with open(input_file, 'r') as file:
         prompts: List[str] = [line.strip() for line in file if line.strip()]
 
-    print(f"Using temperature: {temperature}, top_p: {top_p}, max_gen_len {max_gen_len}")
+    print(f"Using temperature: {temperature}, top_p: {top_p}")
 
-    # Generate text completions
-    results = generator.text_completion(
-        prompts,
-        max_gen_len=max_gen_len,
-        temperature=temperature,
-        top_p=top_p,
-    )
-
-    # Write results to file
+    # Generate text completions sequentially and output to terminal
     with open(output_file, 'w') as out_file:
-        for prompt, result in zip(prompts, results):
-            #out_file.write(prompt + "\n")
-            out_file.write(f"{result['generation']}\n")
+        for prompt in prompts:
+            result = generator.text_completion(
+                [prompt],
+                max_gen_len=max_gen_len,
+                temperature=temperature,
+                top_p=top_p,
+            )[0]  # Get the first result since we are processing one prompt at a time
+
+            generated_text = result['generation']
+            out_file.write(f"{generated_text}\n")
             out_file.write("----\n")
 
-    # Optionally print results to console as well
-    with open(output_file, 'r') as out_file:
-        print(out_file.read())
+            # Print the result to the console
+            print(f"Prompt: {prompt}\nGenerated text: {generated_text}\n----")
 
 if __name__ == "__main__":
     fire.Fire(main)

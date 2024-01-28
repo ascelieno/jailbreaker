@@ -1,0 +1,32 @@
+import argparse
+
+def extract_response(section):
+    start_marker = "### RESPONSE:\\n"
+    start_idx = section.find(start_marker)
+    if start_idx != -1:
+        start_idx += len(start_marker)
+        response = section[start_idx:].strip()
+        # Remove the last three characters from the response
+        if len(response) > 3:
+            response = response[:-3]
+        return response
+    return None
+
+def process_file(input_file_path, output_file_path, delimiter='----'):
+    with open(input_file_path, 'r') as infile, open(output_file_path, 'w') as outfile:
+        content = infile.read()
+        sections = content.split(delimiter)
+
+        for section in sections:
+            response = extract_response(section)
+            if response:
+                outfile.write(response + "\n")
+                outfile.write(delimiter + "\n")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Extract responses from a file and write them to another file with delimiters.')
+    parser.add_argument('input_file', type=str, help='Path to the input file')
+    parser.add_argument('output_file', type=str, help='Path to the output file')
+    args = parser.parse_args()
+
+    process_file(args.input_file, args.output_file)
