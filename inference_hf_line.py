@@ -23,6 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("config_path", help="Path to the config YAML file")
     parser.add_argument("queries_file", help="Path to the queries file")
     parser.add_argument("output_file", help="Path to the output file")
+    parser.add_argument("--max_length", type=int, default=1024, help="Maximum sequence length for the model")
     args = parser.parse_args()
 
     config = read_yaml_file(args.config_path)
@@ -38,24 +39,21 @@ if __name__ == "__main__":
 
     pipe = pipeline(
         "text-generation",
-        model=model, 
-        tokenizer=tokenizer, 
-        max_length=1024,
+        model=model,
+        tokenizer=tokenizer,
+        max_length=args.max_length,  # Use the command line argument for max_length
         temperature=0.7,
         top_p=0.95,
         repetition_penalty=1.15
     )
 
     with open(args.queries_file, 'r') as file, open(args.output_file, 'w') as outfile:
-        content = file.read()
-        prompts = content.split("----")  # Split the file content by the delimiter
-
-        for prompt in prompts:
-            prompt = prompt.strip()
-            if prompt:
-                response = get_llm_response(pipe, prompt)
+        for line in file:
+            line = line.strip()
+            if line:
+                response = get_llm_response(pipe, line)
                 response_text = f"{response}\n"
-                #print(prompt)
+                print(line)
                 print(response_text)
                 outfile.write(response_text)
                 outfile.write("----\n")  # Write the delimiter after each response
