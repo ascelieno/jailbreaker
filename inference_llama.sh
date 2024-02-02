@@ -12,26 +12,32 @@ source /proj/nobackup/hpc2n2023-124/env/bin/activate
 echo "Loading Llama 2..."
 
 # Run the torch command with srun
-srun torchrun --nproc_per_node 1 /proj/nobackup/hpc2n2023-124/jailbreaker/example_chat_completion.py \
-    --ckpt_dir /proj/nobackup/hpc2n2023-124/llama/llama-2-7b-chat/ \
-    --tokenizer_path /proj/nobackup/hpc2n2023-124/llama/tokenizer.model \
-    --max_seq_len 1024 --max_batch_size 6 
+#srun torchrun --nproc_per_node 1 /proj/nobackup/hpc2n2023-124/jailbreaker/example_chat_completion.py \
+#    --ckpt_dir /proj/nobackup/hpc2n2023-124/llama/llama-2-7b-chat/ \
+#    --tokenizer_path /proj/nobackup/hpc2n2023-124/llama/tokenizer.model \
+#    --max_seq_len 1024 --max_batch_size 6 
 
 
 #reads from input- and writes to output-file
 
 #text completion
+cd /proj/nobackup/hpc2n2023-124/llama
+
 torchrun --nproc_per_node 1 ../jailbreaker/inference_llama_text.py \
-	--ckpt_dir llama-2-7b/ \
+	--ckpt_dir $1/ \
 	--tokenizer_path tokenizer.model \
-	--max_seq_len 1024 --max_batch_size 64 --temperature=0.7 --top_p=0.95  \
-	--input_file ../jailbreaker/data/question_single.txt \
-	--output_file out
+	--max_batch_size 64 \
+	$2 $3 $4 $5 $6
+#	--max_seq_len 1024  --temperature=0.7 --top_p=0.95  \
+#	--input_file ../jailbreaker/data/question_single.txt \
+#	--output_file out
+
+
 
 #chat completion
 #torchrun --nproc_per_node 1 ../jailbreaker/inference_llama_chat.py \
-	--ckpt_dir llama-2-7b-chat/ \
-	--tokenizer_path tokenizer.model \
-	--max_seq_len 1024 --max_batch_size 64 --temperature=0.7 --top_p=0.95 \ 
-	--input_file ../jailbreaker/data/questions_all.json \
-	--output_file ../jailbreaker/data/results/llama2_7b_chat_original_45_questions.txt
+#	--ckpt_dir llama-2-7b-chat/ \
+#	--tokenizer_path tokenizer.model \
+#	--max_seq_len 1024 --max_batch_size 64 --temperature=0.7 --top_p=0.95 \ 
+#	--input_file ../jailbreaker/data/questions_all.json \
+#	--output_file ../jailbreaker/data/results/llama2_7b_chat_original_45_questions.txt
