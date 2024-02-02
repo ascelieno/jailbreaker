@@ -22,15 +22,22 @@ echo "Loading Llama 2..."
 
 #text completion
 cd /proj/nobackup/hpc2n2023-124/llama
+pwd
+
+echo $1
+echo $2
+echo $3
+echo $4
+echo $5
+echo $6
 
 torchrun --nproc_per_node 1 ../jailbreaker/inference_llama_text.py \
 	--ckpt_dir $1/ \
 	--tokenizer_path tokenizer.model \
 	--max_batch_size 64 \
-	$2 $3 $4 $5 $6
-#	--max_seq_len 1024  --temperature=0.7 --top_p=0.95  \
-#	--input_file ../jailbreaker/data/question_single.txt \
-#	--output_file out
+	$2 $3 $4 \
+	--input_file ../jailbreaker/$5 \
+	--output_file ../jailbreaker/$6
 
 
 
