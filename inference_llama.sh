@@ -30,14 +30,15 @@ echo $3
 echo $4
 echo $5
 echo $6
+echo $7
+echo $8
 
 torchrun --nproc_per_node 1 ../jailbreaker/inference_llama_text.py \
 	--ckpt_dir $1/ \
 	--tokenizer_path tokenizer.model \
-	--max_batch_size 64 \
-	$2 $3 $4 \
-	--input_file ../jailbreaker/$5 \
-	--output_file ../jailbreaker/$6
+	$2 $3 $4 $5 $6 \
+	--input_file ../jailbreaker/$7 \
+	--output_file ../jailbreaker/$8
 
 
 
