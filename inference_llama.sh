@@ -11,16 +11,6 @@ source /proj/nobackup/hpc2n2023-124/env/bin/activate
 
 echo "Loading Llama 2..."
 
-# Run the torch command with srun
-#srun torchrun --nproc_per_node 1 /proj/nobackup/hpc2n2023-124/jailbreaker/example_chat_completion.py \
-#    --ckpt_dir /proj/nobackup/hpc2n2023-124/llama/llama-2-7b-chat/ \
-#    --tokenizer_path /proj/nobackup/hpc2n2023-124/llama/tokenizer.model \
-#    --max_seq_len 1024 --max_batch_size 6 
-
-
-#reads from input- and writes to output-file
-
-#text completion
 cd /proj/nobackup/hpc2n2023-124/llama
 pwd
 
@@ -32,13 +22,14 @@ echo $5
 echo $6
 echo $7
 echo $8
+echo $9
 
 torchrun --nproc_per_node 1 ../jailbreaker/inference_llama_text.py \
 	--ckpt_dir $1/ \
+	--input_file ../jailbreaker/$2 \
+	--output_file ../jailbreaker/$3 \
 	--tokenizer_path tokenizer.model \
-	$2 $3 $4 $5 $6 \
-	--input_file ../jailbreaker/$7 \
-	--output_file ../jailbreaker/$8
+	$4 $5 $6 $7 $8 $9 \
 
 
 

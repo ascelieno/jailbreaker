@@ -3,4 +3,4 @@
 #these two are needed for llm_qlora
 ml GCCcore/11.3.0 Python/3.10.4
 
-source $PROJ/llm_qlora/venv/bin/activate
+source $PROJ/llm_qlora/new_env/bin/activate
