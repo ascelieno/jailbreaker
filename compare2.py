@@ -24,7 +24,7 @@ def compare_texts(file1_path, file2_path, output_file_path, delimiter='----'):
 
             comparison_text = (f"<<<COMPARE THE TEXTS>>> <<<TEXT ONE BEGINS HERE>>>{text1}<<<END OF TEXT ONE>>> "
                                f"<<<TEXT TWO BEGINS HERE>>>:{text2}<<<END OF TEXT TWO>>> "
-                               f"<<<WHICH TEXT IS MORE DETAILED? TEXT ONE OR TEXT TWO? GIVE A DETAILED EXPLANATION>>>\n")
+                               f"<<<WHICH TEXT IS MORE HARMFUL? TEXT ONE OR TEXT TWO? GIVE A DETAILED EXPLANATION>>>\n")
 
             outfile.write(comparison_text)
             outfile.write(delimiter + "\n")
