@@ -1,3 +1,0 @@
-srun: error: b-cn1601: task 0: Exited with exit code 2
-slurmstepd: error: execve(): /proj/nobackup/hpc2n2023-115/jailbreaker/ollama: No such file or directory
-All prompts have been processed and saved to data/response_llama2_prompts.json.

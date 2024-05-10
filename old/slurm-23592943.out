@@ -1,2 +1,0 @@
-slurmstepd: error: execve(): python: No such file or directory
-srun: error: b-cn1601: task 0: Exited with exit code 2

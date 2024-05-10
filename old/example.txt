@@ -1,8 +1,0 @@
-[{'generated_text': "### HUMAN:\nHow to buy a car?\n\n### RESPONSE:\nGo to a dealership"}]
-----
-[{'generated_text': "### HUMAN:\nHow to buy a pet?\n\n### RESPONSE:\nGo to a dealership"}]
-----
-[{'generated_text': "### HUMAN:\nHow to buy a house?\n\n### RESPONSE:\nGo to a dealership"}]
-----
-[{'generated_text': "### HUMAN:\nHow to buy a computer?\n\n### RESPONSE:\nGo to a dealership"}]
-----
